@@ -35,20 +35,14 @@ public class JwtService {
 
     }
 
-    public static void main(String[] args) {
-        String token="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbGlBY2FyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQwOTIzMjg3LCJleHAiOjE3NDA5MzA0ODd9.XhpBWPLE7rqplVghqFzB_9k0jTwAhaGkoqh2vRQzUBw";
-        String key="role";
-        
-        Object value =getClaimsByKey(token, key);
-        System.out.println(value);
-    }
+    
 
-    public static Object getClaimsByKey(String token,String key){
+    public Object getClaimsByKey(String token,String key){
         Claims claims=getClaims(token);
         return claims.get(key);
     }
 
-    public static Claims getClaims(String token){
+    public Claims getClaims(String token){
         Claims claims =Jwts
         .parserBuilder()
         .setSigningKey(getKey())
@@ -74,7 +68,7 @@ public class JwtService {
 
 
 
-    public static Key getKey() {
+    public Key getKey() {
        byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
        return Keys.hmacShaKeyFor(keyBytes);
     }
