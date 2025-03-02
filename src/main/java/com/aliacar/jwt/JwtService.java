@@ -22,10 +22,12 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
 
-        // Map<String,String> claimsMap=new HashMap<>();
-        // claimsMap.put("role", "ADMIN");
+        Map<String,Object> claimsMap=new HashMap<>();
+        claimsMap.put("role", "ADMIN");
+
         return Jwts.builder()
         .setSubject(userDetails.getUsername())
+        .addClaims(claimsMap)
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis()+1000*3600*2))
         .signWith(getKey(),SignatureAlgorithm.HS256)
@@ -33,12 +35,30 @@ public class JwtService {
 
     }
 
-    public <T> T exportToken(String token,Function<Claims,T> claimsFunction){
+    public static void main(String[] args) {
+        String token="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbGlBY2FyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQwOTIzMjg3LCJleHAiOjE3NDA5MzA0ODd9.XhpBWPLE7rqplVghqFzB_9k0jTwAhaGkoqh2vRQzUBw";
+        String key="role";
+        
+        Object value =getClaimsByKey(token, key);
+        System.out.println(value);
+    }
+
+    public static Object getClaimsByKey(String token,String key){
+        Claims claims=getClaims(token);
+        return claims.get(key);
+    }
+
+    public static Claims getClaims(String token){
         Claims claims =Jwts
         .parserBuilder()
         .setSigningKey(getKey())
         .build()
         .parseClaimsJws(token).getBody();
+        return claims;
+    }
+
+    public <T> T exportToken(String token,Function<Claims,T> claimsFunction){
+       Claims claims= getClaims(token);
 
         return claimsFunction.apply(claims);
     }
@@ -54,7 +74,7 @@ public class JwtService {
 
 
 
-    public Key getKey() {
+    public static Key getKey() {
        byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
        return Keys.hmacShaKeyFor(keyBytes);
     }
