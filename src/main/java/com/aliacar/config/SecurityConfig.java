@@ -19,6 +19,9 @@ public class SecurityConfig {
 
     public static final String AUTHENTICATE = "/authenticate";
     public static final String REGISTER = "/register";
+    public static final String REFRESHTOKEN = "/refreshToken";
+
+
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -39,7 +42,7 @@ public class SecurityConfig {
         return http
             .csrf(csrf -> csrf.disable()) // CSRF korumasını devre dışı bırak
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AUTHENTICATE, REGISTER).permitAll() // Açık endpointler
+                .requestMatchers(AUTHENTICATE, REGISTER,REFRESHTOKEN).permitAll() // Açık endpointler
                 .anyRequest().authenticated() // Diğer tüm istekler kimlik doğrulama gerektirir
             )
             .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))

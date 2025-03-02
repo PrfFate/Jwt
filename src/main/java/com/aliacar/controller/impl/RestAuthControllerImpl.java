@@ -12,8 +12,9 @@ import com.aliacar.controller.IRestAuthController;
 import com.aliacar.dto.DtoUser;
 import com.aliacar.jwt.AuthRequest;
 import com.aliacar.jwt.AuthResponse;
+import com.aliacar.jwt.RefreshTokenRequest;
 import com.aliacar.service.IAuthService;
-
+import com.aliacar.service.IRefreshTokenService;
 
 import jakarta.validation.Valid;
 
@@ -22,6 +23,9 @@ public class RestAuthControllerImpl implements IRestAuthController{
 
     @Autowired
     private IAuthService authService;
+
+    @Autowired
+    private IRefreshTokenService refreshTokenService;
 
     
 
@@ -40,6 +44,15 @@ public class RestAuthControllerImpl implements IRestAuthController{
     public AuthResponse authenticate(@Valid @RequestBody AuthRequest request) {
         return authService.authenticate(request);
     }
+
+
+    @PostMapping("/refreshToken")
+    @Override
+    public AuthResponse refreshToken(@RequestBody RefreshTokenRequest request) {
+        return refreshTokenService.refreshToken(request);
+    }
+
+    
 
     
 
