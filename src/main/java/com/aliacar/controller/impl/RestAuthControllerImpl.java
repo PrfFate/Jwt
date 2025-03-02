@@ -11,6 +11,7 @@ import com.aliacar.controller.IRestAuthController;
 
 import com.aliacar.dto.DtoUser;
 import com.aliacar.jwt.AuthRequest;
+import com.aliacar.jwt.AuthResponse;
 import com.aliacar.service.IAuthService;
 
 
@@ -32,6 +33,15 @@ public class RestAuthControllerImpl implements IRestAuthController{
         
         
     }
+
+
+    @PostMapping("/authenticate")
+    @Override
+    public AuthResponse authenticate(@Valid @RequestBody AuthRequest request) {
+        return authService.authenticate(request);
+    }
+
+    
 
     
 

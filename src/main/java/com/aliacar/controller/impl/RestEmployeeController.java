@@ -9,19 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aliacar.dto.DtoEmployee;
 import com.aliacar.service.IEmployeeService;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+
 
 @RestController
 @RequestMapping("/employee")
-public class RestEmployeeController implements IResEmployeeController {
+public class RestEmployeeController implements IRestEmployeeController {
 
     @Autowired
     private IEmployeeService employeeService;
 
     @GetMapping("/{id}")
     @Override
-    public DtoEmployee findEmployeeById(@Valid @NotEmpty @PathVariable(name = "id")Long id) {
+    public DtoEmployee findEmployeeById(@PathVariable(name = "id")Long id) {
         return employeeService.findEmployeeById(id);
         
     }
