@@ -20,6 +20,7 @@ public class SecurityConfig {
     public static final String AUTHENTICATE = "/authenticate";
     public static final String REGISTER = "/register";
     public static final String REFRESHTOKEN = "/refreshToken";
+    
 
 
 
@@ -37,12 +38,20 @@ public class SecurityConfig {
         this.authEntryPoint = authEntryPoint;
     }
 
+
+    public static final String[] SWAGGER_PATHS={
+        "/swagger-ui/**",
+        "v3/api-docs/**",
+        "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .csrf(csrf -> csrf.disable()) // CSRF korumasını devre dışı bırak
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTHENTICATE, REGISTER,REFRESHTOKEN).permitAll() // Açık endpointler
+                .requestMatchers(SWAGGER_PATHS).permitAll()
                 .anyRequest().authenticated() // Diğer tüm istekler kimlik doğrulama gerektirir
             )
             .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
